@@ -11,6 +11,17 @@ import {
 
 const router = express.Router();
 
+/**
+ * ADICIONADO: arquivo sozinho é uma atualização; campos continuam estritos.
+ * @param {import("express").Request} req - Texto e foto interpretados pelo Multer.
+ * @param {import("express").Response} res - Resposta Express.
+ * @param {import("express").NextFunction} next - Próximo middleware.
+ */
+function validateUpdateWithPhoto(req, res, next) {
+  if (req.file && Object.keys(req.body).length === 0) return next();
+  return validate(updateUserV2Schema)(req, res, next);
+}
+
 router.post(
   "/",
   uploadPhoto,
@@ -22,7 +33,9 @@ router.get("/:id", validate(idParamSchema, "params"), userController.getById);
 router.patch(
   "/:id",
   validate(idParamSchema, "params"),
-  validate(updateUserV2Schema),
+  // MODIFICADO: parser antes da validação do texto, depois do ID válido.
+  uploadPhoto,
+  validateUpdateWithPhoto,
   userController.update,
 );
 router.delete("/:id", validate(idParamSchema, "params"), userController.remove);
