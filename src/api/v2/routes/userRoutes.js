@@ -11,6 +11,7 @@ import {
 
 const router = express.Router();
 
+// ADICIONADO: componentes V2 (usuário, envelopes, corpos e erros de upload).
 /**
  * @swagger
  * components:
@@ -223,6 +224,7 @@ function validateUpdateWithPhoto(req, res, next) {
   return validate(updateUserV2Schema)(req, res, next);
 }
 
+// ADICIONADO: POST aceita JSON ou multipart; documenta todos os status observáveis.
 /**
  * @swagger
  * /v2/users:
@@ -264,6 +266,7 @@ router.post(
   userController.create,
 );
 
+// ADICIONADO: listagem com envelope success/data/total.
 /**
  * @swagger
  * /v2/users:
@@ -281,6 +284,7 @@ router.post(
  */
 router.get("/", userController.getAll);
 
+// ADICIONADO: busca por ID reutiliza o parâmetro UserId e as respostas de erro.
 /**
  * @swagger
  * /v2/users/{id}:
@@ -303,6 +307,7 @@ router.get("/", userController.getAll);
  */
 router.get("/:id", validate(idParamSchema, "params"), userController.getById);
 
+// ADICIONADO: PATCH parcial com os mesmos dois formatos de corpo do POST.
 /**
  * @swagger
  * /v2/users/{id}:
@@ -350,6 +355,7 @@ router.patch(
   userController.update,
 );
 
+// ADICIONADO: DELETE com conflito para usuários vinculados.
 /**
  * @swagger
  * /v2/users/{id}:

@@ -26,6 +26,7 @@ app.use(
   }),
 );
 
+// ADICIONADO: schema e operação de /health; as respostas 200 e 503 têm o mesmo formato.
 /**
  * @swagger
  * components:
